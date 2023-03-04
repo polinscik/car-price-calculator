@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Document</title>
+        <link rel="stylesheet" href="/styles/normalize.css" />
+        <link rel="stylesheet" href="/styles/style.css" />
+    </head>
+    <body>
+        <main>
+            <section class="section">
+                <h1 class="title">
+                    Калькулятор стоимости транспортного средства
+                </h1>
+                <form action="" name="form" class="form">
+                    <div class="brands">
+                        <label for="brand">Выберите марку автомобиля</label>
+                        <select name="brand" id="brand">
+                            <option value="Renault">Renault</option>
+                            <option value="Opel">Opel</option>
+                            <option value="Mazda">Mazda</option>
+                            <option value="Jaguar">Jaguar</option>
+                        </select>
+                    </div>
+
+                    <div class="models">
+                        <label for="model">Выберите модель автомобиля</label>
+                        <select name="model" id="model"></select>
+                    </div>
+
+                    <div class="fuel-radio">
+                        Выберите тип топлива
+                        <input type="radio" name="fuel" id="petrol" />
+                        <label for="petrol">Бензин</label>
+                        <input type="radio" name="fuel" id="diesel" />
+                        <label for="diesel">Дизель</label>
+                        <input type="radio" name="fuel" id="gas" />
+                        <label for="gas">Газ</label>
+                        <input type="radio" name="fuel" id="electricity" />
+                        <label for="electricity">Электричество</label>
+                    </div>
+                    <div class="engine">
+                        <label for="engineSize"
+                            >Введите объем двигателя (от 1,1 до 3,5
+                            литров)</label
+                        >
+                        <input
+                            type="number"
+                            name="engineSize"
+                            id="engineSize"
+                            min="1.1"
+                            max="3.5"
+                            step="0.1"
+                            value="2.2"
+                        />
+                        литров
+                    </div>
+                    <div class="state" id="state">
+                        Укажите состояние автомобиля
+                        <input type="radio" name="state" id="newState" />
+                        <label for="newState">Новый</label>
+                        <input type="radio" name="state" id="usedState" />
+                        <label for="usedState">Подержанный</label>
+                    </div>
+                    <div class="owners" id="owners"></div>
+                    <div class="payment">
+                        Выберите способ оплаты
+                        <input type="radio" name="pay" id="card" />
+                        <label for="card">Картой</label>
+                        <input type="radio" name="pay" id="cash" />
+                        <label for="cash">Наличными</label>
+                        <input type="radio" name="pay" id="legal-entity" />
+                        <label for="legal-entity"
+                            >Счет на юридическое лицо</label
+                        >
+                    </div>
+                    <div id="error" class="error">Заполните все поля</div>
+                    <input type="submit" id="count" value="Рассчитать" />
+                </form>
+            </section>
+        </main>
+        <script src="/calculator.js"></script>
+    </body>
+</html>
