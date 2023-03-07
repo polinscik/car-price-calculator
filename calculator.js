@@ -1,3 +1,4 @@
+"use strict";
 import { modelList } from "./modelList.js";
 
 const countBtn = document.getElementById("count");
@@ -5,6 +6,8 @@ const errorDiv = document.getElementById("error");
 const dropDownList = document.getElementById("brand");
 const dropDownModelList = document.getElementById("model");
 const stateDiv = document.getElementById("state");
+const engineInput = document.getElementById("engineSize");
+const priceDiv = document.getElementById("priceDiv");
 
 function addOption(option, parent) {
     const createdOption = document.createElement("option");
@@ -13,16 +16,18 @@ function addOption(option, parent) {
     parent.appendChild(createdOption);
 }
 
-modelList.renault.forEach((model) => {
-    addOption(model, dropDownModelList);
+modelList.Renault.forEach((model) => {
+    addOption(model.name, dropDownModelList);
 });
 
 countBtn.addEventListener("click", function (evt) {
     evt.preventDefault();
-    if (checkAll()) {
+    getFuelPrice();
+    if (checkAll() && checkFuel()) {
+        priceDiv.style.display = "block";
+        priceDiv.innerText = `Примерная цена автомобиля - ${getPrice()} руб.`;
         //фции на рассчет
         console.log("ok!");
-    } else {
     }
 });
 
@@ -61,23 +66,23 @@ dropDownList.addEventListener("change", function () {
 
     switch (selectedValue) {
         case "Renault":
-            modelList.renault.forEach((model) => {
-                addOption(model, dropDownModelList);
+            modelList.Renault.forEach((model) => {
+                addOption(model.name, dropDownModelList);
             });
             break;
         case "Opel":
-            modelList.opel.forEach((model) => {
-                addOption(model, dropDownModelList);
+            modelList.Opel.forEach((model) => {
+                addOption(model.name, dropDownModelList);
             });
             break;
         case "Mazda":
-            modelList.mazda.forEach((model) => {
-                addOption(model, dropDownModelList);
+            modelList.Mazda.forEach((model) => {
+                addOption(model.name, dropDownModelList);
             });
             break;
         case "Jaguar":
-            modelList.jaguar.forEach((model) => {
-                addOption(model, dropDownModelList);
+            modelList.Jaguar.forEach((model) => {
+                addOption(model.name, dropDownModelList);
             });
             break;
     }
@@ -115,4 +120,65 @@ function createOwnersDiv() {
     stateDiv.after(newDiv);
     newDiv.appendChild(label);
     newDiv.appendChild(newSelect);
+}
+
+function checkFuel() {
+    if (
+        engineInput.value < engineInput.min ||
+        engineInput.value > engineInput.max
+    ) {
+        errorDiv.style.display = "block";
+        errorDiv.innerText = "Объем двигателя введен неверно.";
+        return false;
+    } else return true;
+}
+
+engineInput.addEventListener("focus", () => {
+    if (errorDiv.innerText == "Объем двигателя введен неверно.") {
+        errorDiv.style.display = "none";
+    }
+});
+
+function getPrice() {
+    const selectedBrand =
+        dropDownList.options[dropDownList.selectedIndex].value;
+    const selectedModel =
+        dropDownModelList.options[dropDownModelList.selectedIndex].value;
+    const selectedModelIndex = dropDownModelList.selectedIndex;
+    let price = modelList[selectedBrand][selectedModelIndex].price;
+    price = Number(price) + getFuelPrice();
+    console.log(price);
+    return price;
+}
+
+function getCheckedInput(name) {
+    let collection = document.getElementsByName(name);
+    let arrayCollection = [...collection];
+    let checkedValue;
+    for (let input of arrayCollection) {
+        if (input.checked) {
+            checkedValue = input.id;
+        }
+    }
+    return checkedValue;
+}
+
+function getFuelPrice() {
+    const checkedFuel = getCheckedInput("fuel");
+    let additionalPrice;
+    switch (checkedFuel) {
+        case "petrol":
+            additionalPrice = 0;
+            break;
+        case "diesel":
+            additionalPrice = 50000;
+            break;
+        case "gas":
+            additionalPrice = 100000;
+            break;
+        case "electricity":
+            additionalPrice = 200000;
+            break;
+    }
+    return additionalPrice;
 }
