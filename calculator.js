@@ -101,11 +101,12 @@ usedStateRadio.addEventListener("change", () => {
 });
 
 newStateRadio.addEventListener("change", () => {
-    document.getElementById("owners").remove();
+    document.getElementById("ownerswrap").remove();
 });
 
 function createOwnersDiv() {
     const newDiv = document.createElement("div");
+    newDiv.setAttribute("id", "ownerswrap");
     const newSelect = document.createElement("select");
     newSelect.setAttribute("id", "owners");
     newSelect.classList.add("owners");
