@@ -22,12 +22,9 @@ modelList.Renault.forEach((model) => {
 
 countBtn.addEventListener("click", function (evt) {
     evt.preventDefault();
-    getFuelPrice();
     if (checkAll() && checkFuel()) {
         priceDiv.style.display = "block";
         priceDiv.innerText = `Примерная цена автомобиля - ${getPrice()} руб.`;
-        //фции на рассчет
-        console.log("ok!");
     }
 });
 
@@ -116,7 +113,7 @@ function createOwnersDiv() {
     addOption("3 владельца и более", newSelect);
     const label = document.createElement("label");
     label.setAttribute("for", "owners");
-    label.innerText = "Укажите количество владельцев";
+    label.innerText = "Укажите количество владельцев:";
     stateDiv.after(newDiv);
     newDiv.appendChild(label);
     newDiv.appendChild(newSelect);
@@ -142,11 +139,13 @@ engineInput.addEventListener("focus", () => {
 function getPrice() {
     const selectedBrand =
         dropDownList.options[dropDownList.selectedIndex].value;
-    const selectedModel =
-        dropDownModelList.options[dropDownModelList.selectedIndex].value;
+    // const selectedModel =
+    //     dropDownModelList.options[dropDownModelList.selectedIndex].value;
     const selectedModelIndex = dropDownModelList.selectedIndex;
     let price = modelList[selectedBrand][selectedModelIndex].price;
-    price = Number(price) + getFuelPrice();
+    price =
+        (Number(price) + getFuelPrice() + getEngineSizePrice()) *
+        getOwnersFactor();
     console.log(price);
     return price;
 }
@@ -181,4 +180,27 @@ function getFuelPrice() {
             break;
     }
     return additionalPrice;
+}
+
+function getEngineSizePrice() {
+    let additionalPrice;
+    if (engineInput.value <= 2) {
+        additionalPrice = 40000;
+    } else if (engineInput.value <= 3) {
+        additionalPrice = 60000;
+    } else {
+        additionalPrice = 100000;
+    }
+    return additionalPrice;
+}
+
+function getOwnersFactor() {
+    let decreaseCoefficient;
+    if (usedStateRadio.checked) {
+        const ownersDiv = document.getElementById("owners");
+        if (ownersDiv.selectedIndex == 0) {
+            decreaseCoefficient = 0.8;
+        } else decreaseCoefficient = 0.5;
+    } else decreaseCoefficient = 1;
+    return decreaseCoefficient;
 }
